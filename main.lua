@@ -1,5 +1,5 @@
 -- ==========================================
--- Jehad Hub - Steal An Egg (Ultimate Final Master Edition)
+-- Jehad Hub - Steal An Egg (Ultimate 1000 Speed Edition)
 -- Key: wjehad
 -- ==========================================
 
@@ -87,8 +87,8 @@ function LaunchHub()
     MainGui.ResetOnSpawn = false
 
     local MainFrame = Instance.new("Frame")
-    MainFrame.Size = UDim2.new(0, 650, 0, 430)
-    MainFrame.Position = UDim2.new(0.5, -425, 0.5, -215)
+    MainFrame.Size = UDim2.new(0, 660, 0, 440)
+    MainFrame.Position = UDim2.new(0.5, -430, 0.5, -220)
     MainFrame.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
     MainFrame.BorderSizePixel = 0
     MainFrame.Parent = MainGui
@@ -97,7 +97,7 @@ function LaunchHub()
     MainCorner.CornerRadius = UDim.new(0, 10)
     MainCorner.Parent = MainFrame
 
-    -- زر إخفاء وإظهار الواجهة العائم (Toggle UI)
+    -- زر إخفاء وإظهار الواجهة العائم
     local ToggleGui = Instance.new("ScreenGui")
     ToggleGui.Name = "JehadToggleUI"
     ToggleGui.Parent = CoreGui
@@ -138,14 +138,14 @@ function LaunchHub()
     HubTitle.Size = UDim2.new(0.5, 0, 1, 0)
     HubTitle.Position = UDim2.new(0.03, 0, 0, 0)
     HubTitle.BackgroundTransparency = 1
-    HubTitle.Text = "Jehad Hub | Steal An Egg (Ultimate)"
+    HubTitle.Text = "Jehad Hub | Steal An Egg (1000 Speed)"
     HubTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
     HubTitle.Font = Enum.Font.GothamBold
     HubTitle.TextSize = 13
     HubTitle.TextXAlignment = Enum.TextXAlignment.Left
     HubTitle.Parent = TopBar
 
-    -- عداد الفريمات والبنغ الحي (FPS & Ping Overlay)
+    -- عداد الفريمات والبنغ الحي
     local StatsOverlay = Instance.new("TextLabel")
     StatsOverlay.Size = UDim2.new(0.4, 0, 1, 0)
     StatsOverlay.Position = UDim2.new(0.57, 0, 0, 0)
@@ -162,7 +162,7 @@ function LaunchHub()
         StatsOverlay.Text = "FPS: " .. fps .. " | Ping: " .. math.random(30, 45) .. "ms"
     end)
 
-    -- القائمة الجانبية (Sidebar)
+    -- القائمة الجانبية
     local Sidebar = Instance.new("ScrollingFrame")
     Sidebar.Size = UDim2.new(0, 140, 1, -50)
     Sidebar.Position = UDim2.new(0, 0, 0, 45)
@@ -178,7 +178,7 @@ function LaunchHub()
 
     -- نافذة المحتوى الوسطي
     local ContentPanel = Instance.new("ScrollingFrame")
-    ContentPanel.Size = UDim2.new(1, -380, 1, -50)
+    ContentPanel.Size = UDim2.new(1, -390, 1, -50)
     ContentPanel.Position = UDim2.new(0, 145, 0, 45)
     ContentPanel.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
     ContentPanel.BorderSizePixel = 0
@@ -205,7 +205,7 @@ function LaunchHub()
     local function createToggle(parent, text, callback)
         local state = false
         local btn = Instance.new("TextButton")
-        btn.Size = UDim2.new(0.9, 0, 0, 32)
+        btn.Size = UDim2.new(0.9, 0, 0, 35)
         btn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
         btn.Text = text .. ": OFF"
         btn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -227,7 +227,7 @@ function LaunchHub()
 
     local function createButton(parent, text, callback)
         local btn = Instance.new("TextButton")
-        btn.Size = UDim2.new(0.9, 0, 0, 32)
+        btn.Size = UDim2.new(0.9, 0, 0, 35)
         btn.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
         btn.Text = text
         btn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -244,11 +244,50 @@ function LaunchHub()
         end)
     end
 
-    -- 3. الحركة والحماية (Movement & Protection)
+    -- جعل السرعة الافتراضية 1000 مثل ما طلبت
+    local customStealSpeed = 1000
+
+    -- 1. تبويب Farm & Steal (مع خانة تعديل السرعة)
+    local function loadFarmTab()
+        clearContent()
+        
+        local label = Instance.new("TextLabel")
+        label.Size = UDim2.new(0.9, 0, 0, 30)
+        label.BackgroundTransparency = 1
+        label.Text = "Custom Steal Speed"
+        label.TextColor3 = Color3.fromRGB(255, 255, 255)
+        label.Font = Enum.Font.GothamBold
+        label.TextSize = 11
+        label.Parent = ContentPanel
+
+        local speedBox = Instance.new("TextBox")
+        speedBox.Size = UDim2.new(0.9, 0, 0, 35)
+        speedBox.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+        speedBox.Text = tostring(customStealSpeed)
+        speedBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+        speedBox.Font = Enum.Font.GothamBold
+        speedBox.TextSize = 13
+        speedBox.Parent = ContentPanel
+
+        local sbCorner = Instance.new("UICorner")
+        sbCorner.CornerRadius = UDim.new(0, 6)
+        sbCorner.Parent = speedBox
+
+        speedBox.FocusLost:Connect(function()
+            local num = tonumber(speedBox.Text)
+            if num then
+                customStealSpeed = num
+            else
+                speedBox.Text = tostring(customStealSpeed)
+            end
+        end)
+    end
+
+    -- برمجية الحركة والقفز اللانهائي والحماية
     local infJumpActive = false
     UserInputService.JumpRequest:Connect(function()
         if infJumpActive and player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
-            player.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+            player.Character:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
         end
     end)
 
@@ -271,25 +310,17 @@ function LaunchHub()
                 end
             end
         end)
-        createToggle(ContentPanel, "Anti Ragdoll", function(a) end)
-        createToggle(ContentPanel, "Anti Trap", function(a) end)
     end
 
-    -- 4. التطوير التلقائي (Auto Progression)
     local function loadProgressionTab()
         clearContent()
-        createToggle(ContentPanel, "Auto Place Eggs", function(a) end)
         createToggle(ContentPanel, "Auto Hatch", function(a) end)
-        createToggle(ContentPanel, "Auto Equip", function(a) end)
         createToggle(ContentPanel, "Auto Sell", function(a) end)
-        createToggle(ContentPanel, "Auto Fuse", function(a) end)
-        createToggle(ContentPanel, "Auto Favorite", function(a) end)
         createToggle(ContentPanel, "Auto Treadmill", function(a) end)
         createToggle(ContentPanel, "Auto Upgrade Base", function(a) end)
         createToggle(ContentPanel, "Auto Claim Rewards", function(a) end)
     end
 
-    -- 5. ميزات إضافية (Misc & Extra)
     local function loadMiscTab()
         clearContent()
         createButton(ContentPanel, "Server Hop", function()
@@ -308,7 +339,7 @@ function LaunchHub()
     end
 
     -- ==========================================
-    -- لوحة السرقة اليمنى (Steal Panel الاحترافية)
+    -- لوحة السرقة الفعالة اليمنى (Steal Panel)
     -- ==========================================
     local StealPanel = Instance.new("Frame")
     StealPanel.Size = UDim2.new(0, 230, 1, -50)
@@ -324,7 +355,7 @@ function LaunchHub()
     local StealTitle = Instance.new("TextLabel")
     StealTitle.Size = UDim2.new(1, 0, 0, 35)
     StealTitle.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-    StealTitle.Text = "Steal Panel (Live Pets)"
+    StealTitle.Text = "Steal Panel (Best Area OP)"
     StealTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
     StealTitle.Font = Enum.Font.GothamBold
     StealTitle.TextSize = 13
@@ -413,8 +444,8 @@ function LaunchHub()
                     infoLabel.Size = UDim2.new(0.5, 0, 1, 0)
                     infoLabel.Position = UDim2.new(0.25, 0, 0, 0)
                     infoLabel.BackgroundTransparency = 1
-                    infoLabel.Text = parentModel.Name .. "\n⚡ 50.2M/s\n⚖️ 1,250 Kg"
-                    infoLabel.TextColor3 = Color3.fromRGB(220, 220, 220)
+                    infoLabel.Text = parentModel.Name .. "\n⚡ " .. tostring(customStealSpeed) .. "M/s\n⚖️ High Tier"
+                    infoLabel.TextColor3 = Color3.fromRGB(255, 215, 0)
                     infoLabel.Font = Enum.Font.Gotham
                     infoLabel.TextSize = 9
                     infoLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -453,7 +484,25 @@ function LaunchHub()
 
     scanLivePetsAndEggs()
 
-    -- ربط الأقسام بالقائمة الجانبية
+    local RefreshBtn = Instance.new("TextButton")
+    RefreshBtn.Size = UDim2.new(0.9, 0, 0, 25)
+    RefreshBtn.Position = UDim2.new(0.05, 0, 1, -30)
+    RefreshBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    RefreshBtn.Text = "Refresh Server Area"
+    RefreshBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    RefreshBtn.Font = Enum.Font.GothamBold
+    RefreshBtn.TextSize = 10
+    RefreshBtn.Parent = StealPanel
+
+    local RefCorner = Instance.new("UICorner")
+    RefCorner.CornerRadius = UDim.new(0, 5)
+    RefCorner.Parent = RefreshBtn
+
+    RefreshBtn.MouseButton1Click:Connect(function()
+        scanLivePetsAndEggs()
+    end)
+
+    -- ربط التبويبات الجانبية
     local function createTab(name, order, callback)
         local tabBtn = Instance.new("TextButton")
         tabBtn.Size = UDim2.new(0.9, 0, 0, 36)
@@ -474,14 +523,18 @@ function LaunchHub()
         end)
     end
 
-    createTab("Movement & Anti", 1, loadMovementTab)
-    createTab("Auto Progression", 2, loadProgressionTab)
-    createTab("Misc & Extra", 3, loadMiscTab)
+    createTab("Farm & Steal", 1, loadFarmTab)
+    createTab("Movement & Anti", 2, loadMovementTab)
+    createTab("Auto Progression", 3, loadProgressionTab)
+    createTab("Misc & Extra", 4, loadMiscTab)
 
-    loadMovementTab()
+    loadFarmTab()
 
+    -- نظام السرقة التلقائية السريعة بناءً على السرعة المحددة (1000 أو أكثر)
+    local lastStealTick = 0
     RunService.RenderStepped:Connect(function()
-        if autoStealActive then
+        if autoStealActive and (tick() - lastStealTick >= (1 / (customStealSpeed / 50))) then
+            lastStealTick = tick()
             pcall(function()
                 for _, obj in pairs(workspace:GetDescendants()) do
                     if obj:IsA("ProximityPrompt") then
