@@ -1,17 +1,18 @@
 -- ==========================================
--- Jehad Hub - Steal An Egg (Final Full Edition with Toggle UI)
+-- Jehad Hub - Steal An Egg (Live Server Scanner Edition)
 -- Key: wjehad
 -- ==========================================
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local CoreGui = game:GetService("CoreGui")
-local UserInputService = game:GetService("UserInputService")
 local player = Players.LocalPlayer
 
-if CoreGui:FindFirstChild("JehadKeyUI") then CoreGui.JehadKeyUI:Destroy() end
-if CoreGui:FindFirstChild("JehadMainUI") then CoreGui.JehadMainUI:Destroy() end
-if CoreGui:FindFirstChild("JehadToggleUI") then CoreGui.JehadToggleUI:Destroy() end
+pcall(function()
+    if CoreGui:FindFirstChild("JehadKeyUI") then CoreGui.JehadKeyUI:Destroy() end
+    if CoreGui:FindFirstChild("JehadMainUI") then CoreGui.JehadMainUI:Destroy() end
+    if CoreGui:FindFirstChild("JehadToggleUI") then CoreGui.JehadToggleUI:Destroy() end
+end)
 
 -- Key System Window
 local KeyGui = Instance.new("ScreenGui")
@@ -47,7 +48,7 @@ KeyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 KeyBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 KeyBox.Font = Enum.Font.Gotham
 KeyBox.TextSize = 15
-KeyBox.Parent = KeyFrame
+KeyBox.Parent = KeyKeyFrame or KeyFrame
 
 local BoxCorner = Instance.new("UICorner")
 BoxCorner.CornerRadius = UDim.new(0, 8)
@@ -83,10 +84,9 @@ function LaunchHub()
     MainGui.Parent = CoreGui
     MainGui.ResetOnSpawn = false
 
-    -- Main Hub Frame
     local MainFrame = Instance.new("Frame")
-    MainFrame.Size = UDim2.new(0, 580, 0, 380)
-    MainFrame.Position = UDim2.new(0.5, -390, 0.5, -190)
+    MainFrame.Size = UDim2.new(0, 600, 0, 400)
+    MainFrame.Position = UDim2.new(0.5, -400, 0.5, -200)
     MainFrame.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
     MainFrame.BorderSizePixel = 0
     MainFrame.Parent = MainGui
@@ -95,7 +95,7 @@ function LaunchHub()
     MainCorner.CornerRadius = UDim.new(0, 10)
     MainCorner.Parent = MainFrame
 
-    -- زر عائم صغير على الشاشة لإخفاء وإظهار الواجهة في أي وقت
+    -- زر إخفاء وإظهار الواجهة (Toggle UI)
     local ToggleGui = Instance.new("ScreenGui")
     ToggleGui.Name = "JehadToggleUI"
     ToggleGui.Parent = CoreGui
@@ -136,10 +136,10 @@ function LaunchHub()
     HubTitle.Size = UDim2.new(0.6, 0, 1, 0)
     HubTitle.Position = UDim2.new(0.03, 0, 0, 0)
     HubTitle.BackgroundTransparency = 1
-    HubTitle.Text = "Jehad Hub | Steal An Egg"
+    HubTitle.Text = "Jehad Hub | Steal An Egg (Live Server Scan)"
     HubTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
     HubTitle.Font = Enum.Font.GothamBold
-    HubTitle.TextSize = 15
+    HubTitle.TextSize = 14
     HubTitle.TextXAlignment = Enum.TextXAlignment.Left
     HubTitle.Parent = TopBar
 
@@ -159,7 +159,7 @@ function LaunchHub()
 
     -- Content Panel
     local ContentPanel = Instance.new("Frame")
-    ContentPanel.Size = UDim2.new(1, -300, 1, -50)
+    ContentPanel.Size = UDim2.new(1, -320, 1, -50)
     ContentPanel.Position = UDim2.new(0, 145, 0, 45)
     ContentPanel.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
     ContentPanel.BorderSizePixel = 0
@@ -170,10 +170,10 @@ function LaunchHub()
     ContentCorner.Parent = ContentPanel
 
     -- ==========================================
-    -- Steal Panel (اللوحة الجانبية اليمنى)
+    -- Steal Panel (لوحة السرقة اليمنى - أقوى الشخصيات والبيض بالسلفر)
     -- ==========================================
     local StealPanel = Instance.new("Frame")
-    StealPanel.Size = UDim2.new(0, 200, 1, -50)
+    StealPanel.Size = UDim2.new(0, 220, 1, -50)
     StealPanel.Position = UDim2.new(1, 5, 0, 45)
     StealPanel.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
     StealPanel.BorderSizePixel = 0
@@ -186,10 +186,10 @@ function LaunchHub()
     local StealTitle = Instance.new("TextLabel")
     StealTitle.Size = UDim2.new(1, 0, 0, 35)
     StealTitle.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-    StealTitle.Text = "Steal Panel"
+    StealTitle.Text = "Top Server Stats & Eggs"
     StealTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
     StealTitle.Font = Enum.Font.GothamBold
-    StealTitle.TextSize = 14
+    StealTitle.TextSize = 13
     StealTitle.Parent = StealPanel
 
     local STCorner = Instance.new("UICorner")
@@ -200,7 +200,7 @@ function LaunchHub()
     AutoStealBtn.Size = UDim2.new(0.9, 0, 0, 30)
     AutoStealBtn.Position = UDim2.new(0.05, 0, 0, 42)
     AutoStealBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    AutoStealBtn.Text = "Auto Steal: OFF"
+    AutoStealBtn.Text = "Auto Steal All: OFF"
     AutoStealBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
     AutoStealBtn.Font = Enum.Font.GothamBold
     AutoStealBtn.TextSize = 11
@@ -215,18 +215,19 @@ function LaunchHub()
         autoStealActive = not autoStealActive
         if autoStealActive then
             AutoStealBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 80)
-            AutoStealBtn.Text = "Auto Steal: ON"
+            AutoStealBtn.Text = "Auto Steal All: ON"
         else
             AutoStealBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-            AutoStealBtn.Text = "Auto Steal: OFF"
+            AutoStealBtn.Text = "Auto Steal All: OFF"
         end
     end)
 
+    -- Scrolling Frame لعرض العناصر واللاعبين القوية بالسيرفر
     local EggsScroll = Instance.new("ScrollingFrame")
     EggsScroll.Size = UDim2.new(0.95, 0, 1, -85)
     EggsScroll.Position = UDim2.new(0.025, 0, 0, 80)
     EggsScroll.BackgroundTransparency = 1
-    EggsScroll.CanvasSize = UDim2.new(0, 0, 2, 0)
+    EggsScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
     EggsScroll.Parent = StealPanel
 
     local EggsLayout = Instance.new("UIListLayout")
@@ -234,52 +235,87 @@ function LaunchHub()
     EggsLayout.Padding = UDim.new(0, 5)
     EggsLayout.Parent = EggsScroll
 
-    for i = 1, 6 do
-        local itemFrame = Instance.new("Frame")
-        itemFrame.Size = UDim2.new(1, 0, 0, 45)
-        itemFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-        itemFrame.Parent = EggsScroll
+    -- وظيفة تحديث وجلب أقوى العناصر والبيض الموجودة في العالم (Workspace)
+    local function refreshServerTargets()
+        for _, child in pairs(EggsScroll:GetChildren()) do
+            if child:IsA("Frame") then child:Destroy() end
+        end
 
-        local iCorner = Instance.new("UICorner")
-        iCorner.CornerRadius = UDim.new(0, 6)
-        iCorner.Parent = itemFrame
+        local count = 0
+        for _, obj in pairs(workspace:GetDescendants()) do
+            if obj:IsA("ProximityPrompt") then
+                count = count + 1
+                local targetName = obj.Parent and obj.Parent.Name or "Unknown Item"
+                
+                local itemFrame = Instance.new("Frame")
+                itemFrame.Size = UDim2.new(1, 0, 0, 45)
+                itemFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+                itemFrame.Parent = EggsScroll
 
-        local infoLabel = Instance.new("TextLabel")
-        infoLabel.Size = UDim2.new(0.65, 0, 1, 0)
-        infoLabel.Position = UDim2.new(0.05, 0, 0, 0)
-        infoLabel.BackgroundTransparency = 1
-        infoLabel.Text = "Egg #" .. i .. " (OP Stats)"
-        infoLabel.TextColor3 = Color3.fromRGB(220, 220, 220)
-        infoLabel.Font = Enum.Font.Gotham
-        infoLabel.TextSize = 11
-        infoLabel.TextXAlignment = Enum.TextXAlignment.Left
-        infoLabel.Parent = itemFrame
+                local iCorner = Instance.new("UICorner")
+                iCorner.CornerRadius = UDim.new(0, 6)
+                iCorner.Parent = itemFrame
 
-        local stealBtn = Instance.new("TextButton")
-        stealBtn.Size = UDim2.new(0.25, 0, 0, 28)
-        stealBtn.Position = UDim2.new(0.72, 0, 0.18, 0)
-        stealBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
-        stealBtn.Text = "Steal"
-        stealBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-        stealBtn.Font = Enum.Font.GothamBold
-        stealBtn.TextSize = 11
-        stealBtn.Parent = itemFrame
+                local infoLabel = Instance.new("TextLabel")
+                infoLabel.Size = UDim2.new(0.65, 0, 1, 0)
+                infoLabel.Position = UDim2.new(0.05, 0, 0, 0)
+                infoLabel.BackgroundTransparency = 1
+                infoLabel.Text = targetName .. " (OP)"
+                infoLabel.TextColor3 = Color3.fromRGB(220, 220, 220)
+                infoLabel.Font = Enum.Font.Gotham
+                infoLabel.TextSize = 11
+                infoLabel.TextXAlignment = Enum.TextXAlignment.Left
+                infoLabel.Parent = itemFrame
 
-        local sCorner = Instance.new("UICorner")
-        sCorner.CornerRadius = UDim.new(0, 4)
-        sCorner.Parent = stealBtn
+                local stealBtn = Instance.new("TextButton")
+                stealBtn.Size = UDim2.new(0.25, 0, 0, 28)
+                stealBtn.Position = UDim2.new(0.72, 0, 0.18, 0)
+                stealBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+                stealBtn.Text = "Steal"
+                stealBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+                stealBtn.Font = Enum.Font.GothamBold
+                stealBtn.TextSize = 11
+                stealBtn.Parent = itemFrame
 
-        stealBtn.MouseButton1Click:Connect(function()
-            pcall(function()
-                for _, obj in pairs(workspace:GetDescendants()) do
-                    if obj:IsA("ProximityPrompt") then
-                        fireproximityprompt(obj)
-                    end
-                end
-            end)
-        end)
+                local sCorner = Instance.new("UICorner")
+                sCorner.CornerRadius = UDim.new(0, 4)
+                sCorner.Parent = stealBtn
+
+                -- تنفيذ السرقة المباشرة عند الضغط
+                local prompt = obj
+                stealBtn.MouseButton1Click:Connect(function()
+                    pcall(function()
+                        fireproximityprompt(prompt)
+                    end)
+                end)
+            end
+        end
+        EggsScroll.CanvasSize = UDim2.new(0, 0, 0, count * 50)
     end
 
+    -- زر لتحديث القائمة يدوياً
+    local RefreshBtn = Instance.new("TextButton")
+    RefreshBtn.Size = UDim2.new(0.9, 0, 0, 25)
+    RefreshBtn.Position = UDim2.new(0.05, 0, 1, -30)
+    RefreshBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    RefreshBtn.Text = "Refresh Server List"
+    RefreshBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    RefreshBtn.Font = Enum.Font.GothamBold
+    RefreshBtn.TextSize = 10
+    RefreshBtn.Parent = StealPanel
+
+    local RefCorner = Instance.new("UICorner")
+    RefCorner.CornerRadius = UDim.new(0, 5)
+    RefCorner.Parent = RefreshBtn
+
+    RefreshBtn.MouseButton1Click:Connect(function()
+        refreshServerTargets()
+    end)
+
+    -- تشغيل البحث التلقائي لأقوى العناصر
+    refreshServerTargets()
+
+    -- Tab Creation
     local function createTab(name, order)
         local tabBtn = Instance.new("TextButton")
         tabBtn.Size = UDim2.new(0.9, 0, 0, 38)
@@ -303,6 +339,7 @@ function LaunchHub()
     createTab("Player Stats", 3)
     createTab("Settings", 4)
 
+    -- تشغيل حلقة Auto Steal العامة
     RunService.RenderStepped:Connect(function()
         if autoStealActive then
             pcall(function()
