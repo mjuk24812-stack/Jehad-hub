@@ -1,4 +1,4 @@
-Getgenv().Setting = {
+getgenv().Setting = {
     ["Team"] = "Pirates",        
     ["Chat"] = {},
     ["Skip Race V4"] = true,        
@@ -70,5 +70,8 @@ Getgenv().Setting = {
     }
 }
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/mjuk24812-stack/Jehad-hub/main/main.lua"))()
-
+task.spawn(function()
+    pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/mjuk24812-stack/Jehad-hub/main/main.lua"))()
+    end)
+end)
